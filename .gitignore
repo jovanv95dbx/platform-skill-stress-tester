@@ -1,0 +1,45 @@
+# Per-run output — never committed (contains real cloud account IDs,
+# workspace IDs, customer-named resources, etc.)
+logs/
+deployments/
+transcripts/
+
+# Per-run persona files and corpus — by convention each run gets a unique
+# personas/<run-name>-personas.md and personas/<run-name>-corpus/ directory.
+# These are kept out of the repo because they often contain real customer
+# names, real Salesforce data, and baked persona prompts.
+personas/*-personas.md
+personas/*-corpus/
+
+# But DO keep the example file (it's fully synthetic)
+!templates/example-personas.md
+
+# Local Claude Code settings
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Terraform state (resource-level secrets in plain text)
+*.tfvars
+*.tfvars.json
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+
+# Secrets / credentials caches
+.databricks/
+.aws/credentials.local
+
+# Python bytecode + cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
