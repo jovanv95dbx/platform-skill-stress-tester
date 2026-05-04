@@ -6,7 +6,7 @@ Stress-test Claude Code skills by running diverse AI personas against them on re
 BUILD skills → TEST with personas → ANALYZE failures → UPDATE skills → REPEAT
 ```
 
-This is the framework that produced the [`databricks-platform-kit-v2`](https://github.com/jovanv95dbx/ai-platform-kit) skill iterations. Every iteration starts here, runs a stress test against the platform-kit, and merges findings back.
+This is the framework that produced the [`ai-platform-kit`](https://github.com/jovanv95dbx/ai-platform-kit) skill iterations. Every iteration starts here, runs a stress test against the AI Platform Kit, and merges findings back.
 
 ## Architecture (one paragraph)
 
@@ -51,7 +51,7 @@ A small Python relay (port 11435) holds chat history per persona and routes betw
    gcloud auth login      # GCP
    ```
 
-5. **Databricks credentials** for workspace creation. For AWS, the recommended pattern is one Account-Admin service principal at the Databricks account level — see `SKILL.md` "Per-run scaffolding" and the platform-kit-v2 repo's `platform-provisioning/AWS.md` for the canonical SRA auth pattern.
+5. **Databricks credentials** for workspace creation. For AWS, the recommended pattern is one Account-Admin service principal at the Databricks account level — see `SKILL.md` "Per-run scaffolding" and the [AI Platform Kit](https://github.com/jovanv95dbx/ai-platform-kit) `platform-provisioning/AWS.md` for the canonical SRA auth pattern.
 
 6. **Permission settings.** Remove `aws*`, `curl *`, `terraform*` from any deny list in `~/.claude/settings.json` — agents inherit the lead's permissions.
 

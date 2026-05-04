@@ -22,7 +22,7 @@ otherwise the user passes --cloud per persona via CLI.
 Usage:
     python3 templates/build_spawn_prompts.py \\
         --personas personas/my-run-personas.md \\
-        --skills /path/to/databricks-platform-kit-v2/.claude/skills \\
+        --skills /path/to/ai-platform-kit/.claude/skills \\
         --run-name my-run
 
 The script writes to:

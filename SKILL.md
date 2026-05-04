@@ -1,5 +1,5 @@
 ---
-name: skill-stress-tester
+name: platform-skill-stress-tester
 description: "Stress-test any Claude Code skill set by running AI personas against them on real infrastructure. Uses local LLMs (Ollama) for cheap persona roleplay and independent Claude Code sessions for skill execution. Implements the Build → Test → Analyze → Update loop for continuous skill improvement."
 ---
 
@@ -57,7 +57,7 @@ BUILD skills → TEST with personas → ANALYZE failures → UPDATE skills → R
 
 5. Create a team with `TeamCreate`
 6. Create one task per persona with `TaskCreate`
-7. Spawn one teammate per persona via `Agent` tool with `team_name`, `model: opus`, `mode: bypassPermissions`. Pass a short prompt that points to the briefing file: `Read /Users/.../<slug>-spawn.txt and follow it precisely.`
+7. Spawn one teammate per persona via `Agent` tool with `team_name`, `model: opus`, `mode: bypassPermissions`. Pass a short prompt that points to the briefing file: `Read <project-root>/personas/<run>-corpus/spawn-prompts/<slug>-spawn.txt and follow it precisely.`
 8. Each teammate reads its briefing → reads ALL skill files from the skills directory
 9. Each teammate calls the relay (`POST /chat/<persona>`) for customer messages — never sees the persona prompt
 10. Each teammate follows the skills to deploy real infrastructure
@@ -235,7 +235,7 @@ Spawn one teammate per persona via the `Agent` tool. Each teammate gets:
 ```
 You are <name>, a Databricks SA in an ASQ-driven stress test. Your full briefing is in:
 
-/Users/jovan.visnjic/vibe/skill-stress-tester/personas/<run>-corpus/spawn-prompts/<slug>-spawn.txt
+<project-root>/personas/<run>-corpus/spawn-prompts/<slug>-spawn.txt
 
 READ THAT FILE FIRST, IN FULL, and follow every instruction in it precisely. It contains your
 cloud auth instructions, the skills directory to read, the relay endpoint for talking to the
@@ -262,7 +262,7 @@ Cloud: <AWS|Azure>
 ==============================
 SKILLS DIRECTORY — READ ALL FILES, NO FILTERING
 ==============================
-Skills root: /Users/.../databricks-platform-kit-v2/.claude/skills/
+Skills root: /path/to/ai-platform-kit/.claude/skills/
 Read EVERY .md file under that directory recursively. ALL of them.
 
 ==============================
