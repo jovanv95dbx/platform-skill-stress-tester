@@ -62,23 +62,31 @@ A small Python relay (port 11435) holds chat history per persona and routes betw
 git clone https://github.com/jovanv95dbx/platform-skill-stress-tester
 cd platform-skill-stress-tester
 
-# 2. Copy the example persona file and edit with your own personas
-cp templates/example-personas.md personas/my-run-personas.md
+# 2. Write your personas file (see templates/PERSONAS-FORMAT.md for the format)
+mkdir -p personas
 $EDITOR personas/my-run-personas.md
 
-# 3. Build the per-persona Ollama models (one-time per run)
+# 3. (AWS only — one-time per Databricks account)
+#    Create the canonical Account-Admin service principal that authenticates
+#    every Terraform provider via env vars. Saves creds to /tmp/canonical-sp/.
+python3 scripts/setup_canonical_sp.py --profile <your-account-u2m-profile>
+
+# 4. Build the per-persona Ollama models (one-time per run)
 python3 templates/build_modelfiles.py --personas personas/my-run-personas.md
 
-# 4. Generate per-agent spawn briefings
+# 5. Generate per-agent spawn briefings
 python3 templates/build_spawn_prompts.py \
     --personas personas/my-run-personas.md \
     --skills /path/to/skills-under-test/.claude/skills \
     --run-name my-run
 
-# 5. Start the persona relay (stateful chat broker)
+# 6. Start the persona relay (stateful chat broker)
 python3 scripts/persona_relay.py --port 11435 --log-dir logs/my-run &
 
-# 6. From inside Claude Code, spawn one Agent per persona, pointing at:
+# 7. (AWS) Source the canonical SP creds before spawning agents
+source /tmp/canonical-sp/sourceme
+
+# 8. From inside Claude Code, spawn one Agent per persona, pointing at:
 #    personas/my-run-personas-corpus/spawn-prompts/<slug>-spawn.txt
 #    Agent reads its briefing → reads skills → talks to relay → deploys → verifies
 ```
@@ -91,11 +99,12 @@ platform-skill-stress-tester/
 ├── SKILL.md                  (full framework documentation, including run playbook)
 ├── LICENSE                   (Apache 2.0)
 ├── scripts/
-│   └── persona_relay.py      (stateful chat broker — port 11435)
+│   ├── persona_relay.py      (stateful chat broker — port 11435)
+│   └── setup_canonical_sp.py (AWS one-time: creates Account-Admin SP for Terraform auth)
 ├── templates/
 │   ├── build_modelfiles.py   (turns persona file into Ollama models)
 │   ├── build_spawn_prompts.py (turns persona file into per-agent briefing files)
-│   └── example-personas.md   (synthetic example file — copy + modify)
+│   └── PERSONAS-FORMAT.md    (format spec — write your own personas, they're run-specific)
 └── docs/
     └── architecture.md       (deeper explanation of persona isolation + verification mandate)
 ```
